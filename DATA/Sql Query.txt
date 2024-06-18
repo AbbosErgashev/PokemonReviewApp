@@ -1,0 +1,46 @@
+
+create table Pokemon (
+	Id int primary key identity(1, 1) not null,
+	Name varchar(50) not null,
+	BirthDate datetime not null
+)
+
+create table Category (
+	Id int identity(1, 1) primary key not null,
+	Name varchar(50) not null
+)
+
+create table Owner (
+	Id int primary key identity(1, 1) not null,
+	FirstName varchar(50) not null,
+	LastName varchar(50) not null,
+	Gym varchar(255) not null
+)
+
+create table Reviewer (
+	Id int primary key not null identity(1, 1),
+	FirstName varchar(50) not null,
+	LastName varchar(50) not null
+)
+
+create table Country (
+	Id int identity(1, 1) primary key not null,
+	Name varchar(50) not null
+)
+
+create table Review (
+	Id int primary key identity(1, 1) not null,
+	Title varchar(100) not null,
+	Text varchar(max),
+	Rating int not null
+)
+
+create table PokemonOwner (
+	PokemonId INT FOREIGN KEY REFERENCES Pokemon(Id),
+	OwnerId int foreign key references Owner(Id)
+)
+
+create table PokemonCategory (
+	PokemonId int foreign key references Pokemon(Id),
+	CategoryId int foreign key references Category(Id)
+)
