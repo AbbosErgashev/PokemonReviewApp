@@ -85,7 +85,7 @@ namespace PokemonReviewApp.Controllers
 
             var reviewerMap = _mapper.Map<Reviewer>(reviewerCreate);
 
-            if(!_reviewerRepository.CreateReviewer(reviewerMap))
+            if (!_reviewerRepository.CreateReviewer(reviewerMap))
             {
                 ModelState.AddModelError("", "Something went wrong while savin");
                 return StatusCode(500, ModelState);
@@ -100,21 +100,21 @@ namespace PokemonReviewApp.Controllers
         [ProducesResponseType(404)]
         public IActionResult UpdateReviewer(int reviewerId, [FromBody] ReviewerDto updateReviewer)
         {
-            if(updateReviewer is null)
+            if (updateReviewer is null)
                 return BadRequest(ModelState);
 
-            if(reviewerId != updateReviewer.Id)
+            if (reviewerId != updateReviewer.Id)
                 return BadRequest(ModelState);
 
             if (!_reviewerRepository.ReviewerExists(reviewerId))
                 return NotFound();
 
-            if(!ModelState.IsValid)
+            if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
             var reviewerMap = _mapper.Map<Reviewer>(updateReviewer);
 
-            if(!_reviewerRepository.UpdateReviewer(reviewerMap))
+            if (!_reviewerRepository.UpdateReviewer(reviewerMap))
             {
                 ModelState.AddModelError("", "Something went wrong updating reviewer");
                 return StatusCode(500, ModelState);
@@ -129,15 +129,15 @@ namespace PokemonReviewApp.Controllers
         [ProducesResponseType(404)]
         public IActionResult DeleteReviewer(int reviewerId)
         {
-            if(!_reviewerRepository.ReviewerExists(reviewerId))
+            if (!_reviewerRepository.ReviewerExists(reviewerId))
                 return BadRequest(ModelState);
 
             var getReviewer = _reviewerRepository.GetReviewer(reviewerId);
 
-            if(!ModelState.IsValid)
+            if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
-            if(!_reviewerRepository.DeleteReviewer(getReviewer))
+            if (!_reviewerRepository.DeleteReviewer(getReviewer))
             {
                 ModelState.AddModelError("", "Something went wrong when deleting reviewer");
             }

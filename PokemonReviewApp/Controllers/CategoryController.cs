@@ -139,7 +139,7 @@ namespace PokemonReviewApp.Controllers
             {
                 ModelState.AddModelError("", "Something went wrong deleting category");
             }
-            
+
             return NoContent();
         }
     }

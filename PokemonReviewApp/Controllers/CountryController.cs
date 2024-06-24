@@ -102,18 +102,18 @@ namespace PokemonReviewApp.Controllers
             if (countryUpdate is null)
                 return BadRequest(ModelState);
 
-            if(countryId != countryUpdate.Id)
+            if (countryId != countryUpdate.Id)
                 return BadRequest(ModelState);
 
             if (!_countryRepository.CountryExits(countryId))
                 return NotFound();
 
-            if(!ModelState.IsValid)
+            if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
             var countryMap = _mapper.Map<Country>(countryUpdate);
 
-            if(!_countryRepository.UpdateCountry(countryMap))
+            if (!_countryRepository.UpdateCountry(countryMap))
             {
                 ModelState.AddModelError("", "Something went wrong updating country");
                 return StatusCode(500, ModelState);
@@ -133,10 +133,10 @@ namespace PokemonReviewApp.Controllers
 
             var getCountry = _countryRepository.GetCountry(countryId);
 
-            if(!ModelState.IsValid)
+            if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
-            if(!_countryRepository.DeleteCountry(getCountry))
+            if (!_countryRepository.DeleteCountry(getCountry))
             {
                 ModelState.AddModelError("", "Something went wrong deleting country");
             }
