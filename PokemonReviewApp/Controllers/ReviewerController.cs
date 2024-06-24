@@ -23,7 +23,7 @@ namespace PokemonReviewApp.Controllers
         [ProducesResponseType(200, Type = typeof(IEnumerable<Reviewer>))]
         public IActionResult GetReviewers()
         {
-            var reviewer = _mapper.Map<List<ReviewerDto>>(_reviewerRepository.GetReviewers());
+            var reviewer = _mapper.Map<List<ReviewerDto>>(_reviewerRepository.GetReviewers().OrderBy(i => i.Id));
 
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
@@ -92,6 +92,57 @@ namespace PokemonReviewApp.Controllers
             }
 
             return Ok("Successfully created");
+        }
+
+        [HttpPut("{reviewerId}")]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(404)]
+        public IActionResult UpdateReviewer(int reviewerId, [FromBody] ReviewerDto updateReviewer)
+        {
+            if(updateReviewer is null)
+                return BadRequest(ModelState);
+
+            if(reviewerId != updateReviewer.Id)
+                return BadRequest(ModelState);
+
+            if (!_reviewerRepository.ReviewerExists(reviewerId))
+                return NotFound();
+
+            if(!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            var reviewerMap = _mapper.Map<Reviewer>(updateReviewer);
+
+            if(!_reviewerRepository.UpdateReviewer(reviewerMap))
+            {
+                ModelState.AddModelError("", "Something went wrong updating reviewer");
+                return StatusCode(500, ModelState);
+            }
+
+            return NoContent();
+        }
+
+        [HttpDelete("{reviewerId}")]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(404)]
+        public IActionResult DeleteReviewer(int reviewerId)
+        {
+            if(!_reviewerRepository.ReviewerExists(reviewerId))
+                return BadRequest(ModelState);
+
+            var getReviewer = _reviewerRepository.GetReviewer(reviewerId);
+
+            if(!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            if(!_reviewerRepository.DeleteReviewer(getReviewer))
+            {
+                ModelState.AddModelError("", "Something went wrong when deleting reviewer");
+            }
+
+            return NoContent();
         }
     }
 }
