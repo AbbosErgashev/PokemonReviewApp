@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Components.Web;
-using PokemonReviewApp.Models;
+﻿using PokemonReviewApp.Models;
 
 namespace PokemonReviewApp.Interfaces
 {
